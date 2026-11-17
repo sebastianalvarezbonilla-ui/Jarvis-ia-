@@ -1,0 +1,357 @@
+{
+  "entities": {
+    "PublishedApp": {
+      "title": "PublishedApp",
+      "description": "Web application generated from a prompt and published online with a public slug URL.",
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "URL-safe unique identifier for the published app.",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-z0-9\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title of the generated application.",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "summary": {
+          "type": "string",
+          "description": "Concise summary of the application's purpose.",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Natural language prompt used to generate or refine the application.",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "htmlCode": {
+          "type": "string",
+          "description": "Complete self-contained HTML5/CSS/JS document for the application.",
+          "minLength": 20,
+          "maxLength": 400000
+        },
+        "status": {
+          "type": "string",
+          "description": "Operational availability status for public hosting.",
+          "enum": ["active", "paused"]
+        },
+        "authorUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the creator.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Public display name of the creator.",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the application was first published."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest update."
+        }
+      },
+      "required": [
+        "slug",
+        "title",
+        "summary",
+        "prompt",
+        "htmlCode",
+        "authorUid",
+        "authorName",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ConnectedApp": {
+      "title": "ConnectedApp",
+      "description": "External or published application connected to OpenJarvis for live monitoring, control, and command dispatch.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the connected application record.",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the connected application.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "appType": {
+          "type": "string",
+          "description": "Integration type for the connected application.",
+          "enum": ["openjarvis_app", "web_app", "api_rest", "webhook"]
+        },
+        "baseUrl": {
+          "type": "string",
+          "description": "Base URL or relative /p/ slug path for the connected application.",
+          "minLength": 5,
+          "maxLength": 500,
+          "pattern": "^(https?://|/p/).+"
+        },
+        "healthPath": {
+          "type": "string",
+          "description": "Endpoint path checked during live connection pings.",
+          "minLength": 0,
+          "maxLength": 200
+        },
+        "defaultMethod": {
+          "type": "string",
+          "description": "Default HTTP method when dispatching commands.",
+          "enum": ["GET", "POST", "PUT", "DELETE"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Operational description so the user and OpenJarvis understand what the app does.",
+          "minLength": 0,
+          "maxLength": 300
+        },
+        "status": {
+          "type": "string",
+          "description": "Whether the connection is active or paused.",
+          "enum": ["active", "paused"]
+        },
+        "lastCheckStatus": {
+          "type": "string",
+          "description": "Result of the latest connectivity check.",
+          "enum": ["unknown", "online", "error"]
+        },
+        "lastHttpCode": {
+          "type": "integer",
+          "description": "Latest HTTP status code observed."
+        },
+        "lastLatencyMs": {
+          "type": "number",
+          "description": "Latest measured latency in milliseconds."
+        },
+        "lastCheckedAtMs": {
+          "type": "number",
+          "description": "Epoch milliseconds of the latest connectivity check."
+        },
+        "linkedPublishedSlug": {
+          "type": "string",
+          "description": "Optional slug linking to a published OpenJarvis app.",
+          "minLength": 0,
+          "maxLength": 80
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the connection was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest update."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "appType",
+        "baseUrl",
+        "healthPath",
+        "defaultMethod",
+        "description",
+        "status",
+        "lastCheckStatus",
+        "lastHttpCode",
+        "lastLatencyMs",
+        "lastCheckedAtMs",
+        "linkedPublishedSlug",
+        "ownerUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "RouterProfile": {
+      "title": "RouterProfile",
+      "description": "Private router connection profile, simplified network settings, and diagnostic summary (zero passwords stored).",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the router profile.",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-friendly router label.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "vendor": {
+          "type": "string",
+          "description": "Router firmware or management platform.",
+          "enum": ["openwrt", "mikrotik", "asus", "tplink", "generic_rest", "manual"]
+        },
+        "hostUrl": {
+          "type": "string",
+          "description": "Management endpoint URL or IP address (optional for snapshot-only diagnostics).",
+          "minLength": 0,
+          "maxLength": 300
+        },
+        "adminUsername": {
+          "type": "string",
+          "description": "Administrator username (password/key is never persisted in Firestore).",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "authScheme": {
+          "type": "string",
+          "description": "Authentication method expected by the router admin endpoint.",
+          "enum": ["basic", "bearer", "api_key_header", "cookie_session"]
+        },
+        "connectionStatus": {
+          "type": "string",
+          "description": "Latest connection status.",
+          "enum": ["unknown", "connected", "unreachable", "snapshot_only"]
+        },
+        "lastHttpCode": {
+          "type": "integer",
+          "description": "Latest HTTP status observed from router endpoint."
+        },
+        "lastLatencyMs": {
+          "type": "number",
+          "description": "Latest measured latency in milliseconds."
+        },
+        "lastDiagnosticHealth": {
+          "type": "string",
+          "description": "Overall simplified health verdict from diagnostics.",
+          "enum": ["unknown", "optimal", "attention", "critical"]
+        },
+        "lastDiagnosticSummary": {
+          "type": "string",
+          "description": "Plain-language summary of the latest router diagnostic.",
+          "minLength": 0,
+          "maxLength": 2000
+        },
+        "wifiName": {
+          "type": "string",
+          "description": "Simplified primary Wi-Fi network name.",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reachMode": {
+          "type": "string",
+          "description": "Simplified speed vs coverage balance.",
+          "enum": ["balanced", "max_speed", "max_range"]
+        },
+        "securityLevel": {
+          "type": "string",
+          "description": "Simplified wireless security level.",
+          "enum": ["wpa2_standard", "wpa3_max", "strict_isolated"]
+        },
+        "priorityMode": {
+          "type": "string",
+          "description": "Simplified traffic priority profile.",
+          "enum": ["general", "video_calls", "gaming_low_latency", "streaming_4k"]
+        },
+        "dnsProtection": {
+          "type": "string",
+          "description": "Simplified DNS speed and family protection mode.",
+          "enum": ["isp_default", "fast_private", "family_safe"]
+        },
+        "guestWifiEnabled": {
+          "type": "boolean",
+          "description": "Whether a separate guest Wi-Fi network is enabled."
+        },
+        "guestWifiName": {
+          "type": "string",
+          "description": "Guest Wi-Fi network name.",
+          "minLength": 0,
+          "maxLength": 64
+        },
+        "autoOptimizeChannel": {
+          "type": "boolean",
+          "description": "Whether automatic Wi-Fi interference channel selection is enabled."
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the router owner.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the router profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the latest update."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "vendor",
+        "hostUrl",
+        "adminUsername",
+        "authScheme",
+        "connectionStatus",
+        "lastHttpCode",
+        "lastLatencyMs",
+        "lastDiagnosticHealth",
+        "lastDiagnosticSummary",
+        "wifiName",
+        "reachMode",
+        "securityLevel",
+        "priorityMode",
+        "dnsProtection",
+        "guestWifiEnabled",
+        "guestWifiName",
+        "autoOptimizeChannel",
+        "ownerUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/published_apps/{appId}": {
+      "schema": {
+        "$ref": "#/entities/PublishedApp"
+      },
+      "description": "Stores published prompt-generated web applications keyed by URL slug."
+    },
+    "/connected_apps/{appId}": {
+      "schema": {
+        "$ref": "#/entities/ConnectedApp"
+      },
+      "description": "Stores private user-configured application connections and operational control metadata."
+    },
+    "/router_profiles/{profileId}": {
+      "schema": {
+        "$ref": "#/entities/RouterProfile"
+      },
+      "description": "Stores private user router profiles, simplified network configuration, and diagnostic summaries."
+    }
+  }
+}

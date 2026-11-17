@@ -1,0 +1,6 @@
+{
+  "name": "OpenJarvis Studio",
+  "description": "Plataforma personal de IA inspirada en OpenJarvis con selección de voces neuronales, agentes configurables, memoria local y trazas de ejecución.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
